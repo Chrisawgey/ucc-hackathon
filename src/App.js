@@ -26,9 +26,11 @@ function App() {
     if (!newTodo.trim()) return;
     
     setTodos([...todos, {
-      id: Date.now(),
+      id: todos.length,
       text: newTodo.trim(),
-      completed: false
+      completed: false,
+      draggedDown: false,
+      draggedUP: false
     }]);
     
     setNewTodo('');
@@ -63,12 +65,55 @@ function App() {
     const newTodos = [...todos];
     const draggedTodo = newTodos[draggedItem];
     
+
+    draggedTodo.draggedDown = (draggedItem > draggedOverItem);
+    draggedTodo.draggedUp = (draggedItem < draggedOverItem);
+
+    let a = () => {
+      let todoHTML = document.getElementsByClassName('todo-item');
+        let el = todoHTML[draggedItem];
+        let el2 = todoHTML[draggedOverItem];
+
+
+
+        let i = 0;
+        let time = setInterval(()=>{
+          if((draggedItem < draggedOverItem)){
+            el.style.transform = `translateY(${i*1}%)`;
+            el2.style.transform = `translateY(-${i*1}%)`;
+          }
+          else{
+            el.style.transform = `translateY(-${i*1}%)`;
+            el2.style.transform = `translateY(${i*1}%)`;
+          }
+          i++;
+          if(i > 100)
+            clearTimeout(time)
+        }, 1)
+
+
+    }
+
+
+
+    a();
+
     newTodos.splice(draggedItem, 1);
     newTodos.splice(draggedOverItem, 0, draggedTodo);
-    
     setTodos(newTodos);
     setDraggedItem(null);
     setDraggedOverItem(null);
+
+
+    let temp = draggedTodo.id
+    draggedTodo.id = todos[draggedOverItem].id
+    todos[draggedOverItem].id = temp
+
+    console.log(newTodos)
+
+    // b();
+
+
   };
 
   const filteredTodos = todos.filter(todo => {

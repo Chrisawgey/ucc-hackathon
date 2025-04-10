@@ -170,6 +170,35 @@ body {
   border-bottom-color: hsl(237, 14%, 26%);
 }
 
+.todo-item.draggedDown{
+  animation: dragDown 0.75s linear;
+
+}
+
+.todo-item.draggedUp{
+  animation: dragUp 0.75s linear;
+}
+
+@keyframes dragDown {
+  0%{
+
+  }
+  100%{
+    transform: translateY(100%);
+    background-color: red;
+
+  }
+}
+
+@keyframes dragUp {
+  0%{
+
+  }
+  100%{
+    transform: translateY(-100%);
+    background-color: red;
+  }
+}
 
 .todo-content {
   display: flex;

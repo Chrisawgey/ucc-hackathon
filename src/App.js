@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import confetti from 'canvas-confetti';
 import './App.css';
+import './todo-create.js'
 
 function App() {
   const [todos, setTodos] = useState(() => {
@@ -91,7 +92,7 @@ function App() {
   };
 
   const filteredTodos = todos.filter(todo => {
-    if (filter === 'active') return !todo.completed;
+    if (filter === 'active') return !todo.completed;;
     if (filter === 'completed') return todo.completed;
     return true;
   });

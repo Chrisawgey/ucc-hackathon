@@ -191,7 +191,7 @@ body {
 }
 
 .dark-mode .todo-item.completed .todo-text {
-  color: hsl(233, 14%, 35%);
+  color: hsl(240, 2%, 67%);
 }
 
 .delete-btn {

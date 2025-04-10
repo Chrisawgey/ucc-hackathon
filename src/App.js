@@ -16,7 +16,7 @@ function App() {
         id: Date.now(),
         text: newTodo.trim(),
         completed: false,
-        justCompleted: false // prevent confetti when adding
+        justCompleted: false
       }
     ]);
 
@@ -30,10 +30,10 @@ function App() {
         return {
           ...todo,
           completed: !todo.completed,
-          justCompleted: !wasCompleted // only true if it's now marked complete
+          justCompleted: !wasCompleted
         };
       }
-      return { ...todo, justCompleted: false }; // reset others
+      return { ...todo, justCompleted: false };
     });
 
     setTodos(updatedTodos);
@@ -45,7 +45,6 @@ function App() {
       setConfetti(true);
       const timer = setTimeout(() => {
         setConfetti(false);
-        // reset justCompleted after confetti
         setTodos((prev) =>
           prev.map((todo) => ({ ...todo, justCompleted: false }))
         );
@@ -64,13 +63,27 @@ function App() {
           value={newTodo}
           onChange={(e) => setNewTodo(e.target.value)}
           placeholder="Add a new task"
-          style={{ padding: '10px', width: '200px' }}
+          style={{
+            padding: '10px',
+            width: '250px',
+            fontSize: '16px',
+            borderRadius: '5px',
+            marginRight: '10px'
+          }}
         />
-        <button type="submit" style={{ padding: '10px' }}>
+        <button
+          type="submit"
+          style={{
+            padding: '10px 20px',
+            fontSize: '16px',
+            borderRadius: '5px',
+            cursor: 'pointer'
+          }}
+        >
           Add
         </button>
       </form>
-      <ul style={{ listStyle: 'none', padding: 0, marginTop: '1rem' }}>
+      <ul style={{ listStyle: 'none', padding: 0, marginTop: '2rem' }}>
         {todos.map((todo) => (
           <li
             key={todo.id}
@@ -79,10 +92,11 @@ function App() {
               cursor: 'pointer',
               textDecoration: todo.completed ? 'line-through' : 'none',
               padding: '10px',
-              backgroundColor: todo.completed ? '#d3ffd3' : '#f0f0f0',
-              margin: '5px auto',
-              width: '250px',
+              backgroundColor: todo.completed ? '#c8f7c5' : '#f4f4f4',
+              margin: '10px auto',
+              width: '300px',
               borderRadius: '5px',
+              fontSize: '18px'
             }}
           >
             {todo.text}

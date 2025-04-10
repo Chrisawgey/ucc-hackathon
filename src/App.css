@@ -149,9 +149,29 @@ body {
   cursor: grab;
 }
 
+.todo-item:hover{
+  animation: pulse 0.25s linear;
+  padding-left: 40px;
+  background-color: #FAF9F6;
+
+}
+.dark-mode .todo-item:hover{
+  background-color: #5838B8;
+}
+
+@keyframes pulse {
+  0%{
+    padding-left: 20px;
+  }
+  100%{
+    padding-left: 40px;
+  }
+}
+
 .dark-mode .todo-item {
   border-bottom-color: hsl(237, 14%, 26%);
 }
+
 
 .todo-content {
   display: flex;
@@ -173,7 +193,7 @@ body {
 }
 
 .dark-mode .todo-item.completed .todo-text {
-  color: hsl(233, 14%, 35%);
+  color: hsl(240, 2%, 67%);
 }
 
 .delete-btn {
@@ -295,7 +315,7 @@ body {
   }
 
   .todo-app.dark-mode {
-    background-image: url('/public/icon-check.svg');
+    background-image: url('/public/bg-mobile-dark.jpg');
   }
 
   .desktop-filters {

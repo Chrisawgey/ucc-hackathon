@@ -99,6 +99,8 @@ body {
 .checkbox-circle.checked {
   background: linear-gradient(135deg, hsl(192, 100%, 67%), hsl(280, 87%, 65%));
   border: none;
+  -webkit-mask: none;
+  mask: none;
 }
 
 .todo-input {
@@ -233,6 +235,41 @@ body {
 
 .todo-item:hover .delete-btn {
   opacity: 1;
+}
+.todo-item:hover .checkbox-circle {
+  background: linear-gradient(135deg, hsl(192, 100%, 67%), hsl(280, 87%, 65%));
+  border: none;
+  -webkit-mask: radial-gradient(circle, transparent 60%, black 60%);
+  mask: radial-gradient(circle, transparent 60%, black 60%);
+  transition: background 0.2s ease-in-out;
+}
+
+.checkbox-circle.checked {
+  background: linear-gradient(135deg, hsl(192, 100%, 67%), hsl(280, 87%, 65%));
+  border: none;
+  -webkit-mask: none;
+  mask: none;
+}
+
+.todo-item:hover .checkbox-circle.checked {
+  background: linear-gradient(135deg, hsl(192, 100%, 67%), hsl(280, 87%, 65%));
+  border: none; 
+}
+
+
+.todo-item:hover .checkbox-circle:not(.checked) {
+  background: linear-gradient(135deg, hsl(192, 100%, 67%), hsl(280, 87%, 65%));
+  border: none;
+  -webkit-mask: radial-gradient(circle, transparent 60%, black 60%);
+  mask: radial-gradient(circle, transparent 60%, black 60%);
+  transition: background 0.2s ease-in-out;
+}
+
+.todo-item:hover .checkbox-circle.checked {
+  background: linear-gradient(135deg, hsl(192, 100%, 67%), hsl(280, 87%, 65%));
+  border: none;
+  -webkit-mask: none;
+  mask: none;
 }
 
 .empty-state {

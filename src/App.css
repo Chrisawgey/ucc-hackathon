@@ -274,7 +274,7 @@ body {
   }
 
   .todo-app.dark-mode {
-    background-image: url('/public/icon-check.svg');
+    background-image: url('/public/bg-mobile-dark.jpg');
   }
 
   .desktop-filters {

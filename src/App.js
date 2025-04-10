@@ -1,7 +1,8 @@
+
 import React, { useState, useEffect } from 'react';
 import confetti from 'canvas-confetti';
 import './App.css';
-import './todo-create.js'
+import './todo-create.js';
 
 function App() {
   const [todos, setTodos] = useState(() => {
@@ -42,7 +43,7 @@ function App() {
           ? {
               ...todo,
               completed: !todo.completed,
-              justCompleted: !todo.completed // Flag for triggering confetti
+              justCompleted: !todo.completed
             }
           : { ...todo, justCompleted: false }
       )
@@ -92,7 +93,7 @@ function App() {
   };
 
   const filteredTodos = todos.filter(todo => {
-    if (filter === 'active') return !todo.completed;;
+    if (filter === 'active') return !todo.completed;
     if (filter === 'completed') return todo.completed;
     return true;
   });

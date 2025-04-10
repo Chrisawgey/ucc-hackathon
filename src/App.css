@@ -147,6 +147,20 @@ body {
   cursor: grab;
 }
 
+.todo-item:hover{
+  animation: pulse 0.25s linear;
+  transform: scale(0.95);
+}
+
+@keyframes pulse {
+  0%{
+    transform: scale(1);
+  }
+  100%{
+    transform: scale(0.95);
+  }
+}
+
 .dark-mode .todo-item {
   border-bottom-color: hsl(237, 14%, 26%);
 }

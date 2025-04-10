@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import confetti from 'canvas-confetti';
 import './App.css';
-import './todo-create.js'
 
 function App() {
   const [todos, setTodos] = useState(() => {
@@ -24,21 +24,40 @@ function App() {
   const handleAddTodo = (e) => {
     e.preventDefault();
     if (!newTodo.trim()) return;
-    
+
     setTodos([...todos, {
       id: Date.now(),
       text: newTodo.trim(),
       completed: false
     }]);
-    
+
     setNewTodo('');
   };
 
   const handleToggleTodo = (id) => {
-    setTodos(todos.map(todo => 
-      todo.id === id ? { ...todo, completed: !todo.completed } : todo
-    ));
+    setTodos(prevTodos =>
+      prevTodos.map(todo =>
+        todo.id === id
+          ? {
+              ...todo,
+              completed: !todo.completed,
+              justCompleted: !todo.completed // Flag for triggering confetti
+            }
+          : { ...todo, justCompleted: false }
+      )
+    );
   };
+
+  useEffect(() => {
+    const todoWithConfetti = todos.find(todo => todo.justCompleted);
+    if (todoWithConfetti) {
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+      });
+    }
+  }, [todos]);
 
   const handleDeleteTodo = (id) => {
     setTodos(todos.filter(todo => todo.id !== id));
@@ -59,13 +78,13 @@ function App() {
 
   const handleDrop = () => {
     if (draggedItem === null || draggedOverItem === null) return;
-    
+
     const newTodos = [...todos];
     const draggedTodo = newTodos[draggedItem];
-    
+
     newTodos.splice(draggedItem, 1);
     newTodos.splice(draggedOverItem, 0, draggedTodo);
-    
+
     setTodos(newTodos);
     setDraggedItem(null);
     setDraggedOverItem(null);
@@ -90,20 +109,20 @@ function App() {
           <h1>TODO</h1>
           <button onClick={toggleDarkMode} className="theme-toggle">
             {darkMode ? (
-              <svg className="sun-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="5"></circle>
-                <line x1="12" y1="1" x2="12" y2="3"></line>
-                <line x1="12" y1="21" x2="12" y2="23"></line>
-                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                <line x1="1" y1="12" x2="3" y2="12"></line>
-                <line x1="21" y1="12" x2="23" y2="12"></line>
-                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+              <svg className="sun-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+                <circle cx="12" cy="12" r="5" />
+                <line x1="12" y1="1" x2="12" y2="3" />
+                <line x1="12" y1="21" x2="12" y2="23" />
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                <line x1="1" y1="12" x2="3" y2="12" />
+                <line x1="21" y1="12" x2="23" y2="12" />
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
               </svg>
             ) : (
-              <svg className="moon-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+              <svg className="moon-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
               </svg>
             )}
           </button>
@@ -124,8 +143,8 @@ function App() {
           {filteredTodos.length > 0 ? (
             <ul className="todo-list">
               {filteredTodos.map((todo, index) => (
-                <li 
-                  key={todo.id} 
+                <li
+                  key={todo.id}
                   className={`todo-item ${todo.completed ? 'completed' : ''}`}
                   draggable
                   onDragStart={() => handleDragStart(index)}
@@ -133,24 +152,25 @@ function App() {
                   onDragEnd={handleDrop}
                 >
                   <div className="todo-content">
-                    <div 
+                    <div
                       className={`checkbox-circle ${todo.completed ? 'checked' : ''}`}
                       onClick={() => handleToggleTodo(todo.id)}
                     >
                       {todo.completed && (
-                        <svg xmlns="http://www.w3.org/2000/svg" width="11" height="9" viewBox="0 0 11 9">
-                          <path fill="none" stroke="#FFF" strokeWidth="2" d="M1 4.304L3.696 7l6-6"/>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="11" height="9">
+                          <path fill="none" stroke="#FFF" strokeWidth="2" d="M1 4.304L3.696 7l6-6" />
                         </svg>
                       )}
                     </div>
                     <span className="todo-text">{todo.text}</span>
                   </div>
-                  <button 
-                    onClick={() => handleDeleteTodo(todo.id)}
-                    className="delete-btn"
-                  >
+                  <button onClick={() => handleDeleteTodo(todo.id)} className="delete-btn">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18">
-                      <path fill="#494C6B" fillRule="evenodd" d="M16.97 0l.708.707L9.546 8.84l8.132 8.132-.707.707-8.132-8.132-8.132 8.132L0 16.97l8.132-8.132L0 .707.707 0 8.84 8.132 16.971 0z"/>
+                      <path
+                        fill="#494C6B"
+                        fillRule="evenodd"
+                        d="M16.97 0l.708.707L9.546 8.84l8.132 8.132-.707.707-8.132-8.132-8.132 8.132L0 16.97l8.132-8.132L0 .707.707 0 8.84 8.132 16.971 0z"
+                      />
                     </svg>
                   </button>
                 </li>
@@ -164,32 +184,20 @@ function App() {
 
           <div className="todo-footer">
             <span className="items-left">{activeTodosCount} items left</span>
-            
+
             <div className="filters desktop-filters">
-              <button 
-                onClick={() => setFilter('all')} 
-                className={filter === 'all' ? 'active' : ''}
-              >
+              <button onClick={() => setFilter('all')} className={filter === 'all' ? 'active' : ''}>
                 All
               </button>
-              <button 
-                onClick={() => setFilter('active')} 
-                className={filter === 'active' ? 'active' : ''}
-              >
+              <button onClick={() => setFilter('active')} className={filter === 'active' ? 'active' : ''}>
                 Active
               </button>
-              <button 
-                onClick={() => setFilter('completed')} 
-                className={filter === 'completed' ? 'active' : ''}
-              >
+              <button onClick={() => setFilter('completed')} className={filter === 'completed' ? 'active' : ''}>
                 Completed
               </button>
             </div>
-            
-            <button 
-              onClick={handleClearCompleted}
-              className="clear-completed"
-            >
+
+            <button onClick={handleClearCompleted} className="clear-completed">
               Clear Completed
             </button>
           </div>
@@ -197,22 +205,13 @@ function App() {
 
         <div className="mobile-filters">
           <div className="filters">
-            <button 
-              onClick={() => setFilter('all')} 
-              className={filter === 'all' ? 'active' : ''}
-            >
+            <button onClick={() => setFilter('all')} className={filter === 'all' ? 'active' : ''}>
               All
             </button>
-            <button 
-              onClick={() => setFilter('active')} 
-              className={filter === 'active' ? 'active' : ''}
-            >
+            <button onClick={() => setFilter('active')} className={filter === 'active' ? 'active' : ''}>
               Active
             </button>
-            <button 
-              onClick={() => setFilter('completed')} 
-              className={filter === 'completed' ? 'active' : ''}
-            >
+            <button onClick={() => setFilter('completed')} className={filter === 'completed' ? 'active' : ''}>
               Completed
             </button>
           </div>
